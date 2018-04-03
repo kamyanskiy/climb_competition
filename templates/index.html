@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ url_for("static", filename="js/main.js") }}"></script>
+</head>
+<body>
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form action="/" method="POST">
+    {{ form.csrf_token }}
+    <div data-toggle="fieldset" id="route-fieldset">
+        {% for route in form.route %}
+           <div data-toggle="fieldset-entry">
+               <div data-toggle="fieldset-name">{{ route.name }}</div>
+               {{ route.color.label }}:{{ route.color }}
+               {{ route.attempt_1.label() }}:{{ route.attempt_1() }}
+               {{ route.attempt_2.label }}:{{ route.attempt_2() }}
+               {{ route.attempt_3.label }}:{{ route.attempt_3() }}
+               {{ route.result.label }}:{{ route.result(readonly="readonly") }}
+               {{ route.csrf_token }}
+               <button type="button" data-toggle="fieldset-remove-row" id="route-{{loop.index0}}-remove">-</button>
+            <br>
+           </div>
+        {% endfor %}
+    <button type="button" data-toggle="fieldset-add-row" data-target="#route-fieldset">+</button>
+    <br/>
+        <button type="submit">Submit</button>
+    </div>
+    </form>
+
+
+</body>
+</html>
