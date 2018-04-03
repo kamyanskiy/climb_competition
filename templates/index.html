@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html"
-      xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ url_for("static", filename="js/main.js") }}"></script>
-</head>
-<body>
+{% extends "base.html" %}
+
+    {% block head %}
+    {{ super() }}
+    <title>10A+</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/custom.css") }}">
+
+    {% endblock %}
+
+{% block content %}
    {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class=flashes>
@@ -23,23 +26,24 @@
     <div data-toggle="fieldset" id="route-fieldset">
         {% for route in form.route %}
            <div data-toggle="fieldset-entry">
-               <div data-toggle="fieldset-name">{{ route.name }}</div>
-               {{ route.color.label }}:{{ route.color }}
-               {{ route.attempt_1.label() }}:{{ route.attempt_1() }}
-               {{ route.attempt_2.label }}:{{ route.attempt_2() }}
-               {{ route.attempt_3.label }}:{{ route.attempt_3() }}
-               {{ route.result.label }}:{{ route.result(readonly="readonly") }}
+           <div class="form-group row">
+               <div data-toggle="fieldset-name" class="col-form-label">{{ route.name }}</div>
+               {{ route.color.label(class="col-form-label") }} {{ route.color(class="form-control col-sm-1") }}
+               {{ route.attempt_1.label(class="col-form-label") }} {{ route.attempt_1(class="col-sm-1 form-control") }}
+               {{ route.attempt_2.label(class="col-form-label") }} {{ route.attempt_2(class="col-sm-1 form-control") }}
+               {{ route.attempt_3.label(class="col-form-label") }} {{ route.attempt_3(class="col-sm-1 form-control") }}
+               {{ route.result.label(class="col-form-label") }} {{ route.result(readonly="readonly", class="col-sm-1 form-control") }}
+               <button type="button" class="btn" data-toggle="fieldset-remove-row" id="route-{{loop.index0}}-remove"><i class="fa fa-trash"></i></button>
                {{ route.csrf_token }}
-               <button type="button" data-toggle="fieldset-remove-row" id="route-{{loop.index0}}-remove">-</button>
+           </div>
             <br>
            </div>
         {% endfor %}
-    <button type="button" data-toggle="fieldset-add-row" data-target="#route-fieldset">+</button>
-    <br/>
-        <button type="submit">Submit</button>
+    <div class="form-group row">
+    <button type="button" class="btn" data-toggle="fieldset-add-row" data-target="#route-fieldset"><i class="fas fa-plus"></i> Add route</button>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
     </div>
     </form>
-
-
-</body>
-</html>
+{% endblock %}
